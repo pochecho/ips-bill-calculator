@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+      //CONVENTIONS
+
+      /*
+                    Probability of getting sick = pogs
+                    Days of evolution = doe
+                    Company welcome = cw
+                    Patients type = pt
+                    Probability to be = ptb
+                    */
+      let CONFIGURATION = {
+        initial_population: 50,
+        cw: {
+          min: 0.1,
+          max: 0.11,
+        },
+        doe: 365,
+        at: [
+          {
+            name: "cheap",
+            cost: {
+              min: 25000,
+              max: 30000,
+            },
+          },
+          {
+            name: "normal",
+            cost: {
+              min: 30001,
+              max: 80000,
+            },
+          },
+          {
+            name: "costly",
+            cost: {
+              min: 80001,
+              max: 500000,
+            },
+          },
+          {
+            name: "expensive",
+            cost: {
+              min: 500001,
+              max: 1000000,
+            },
+          },
+        ],
+        pt: [
+          {
+            name: "healthy",
+            ptb: {
+              min: 0.0,
+              max: 0.2,
+            },
+            pogs: {
+              min: 0.02,
+              max: 0.1,
+            },
+          },
+          {
+            name: "average",
+            ptb: {
+              min: 0.2,
+              max: 0.85,
+            },
+            pogs: {
+              min: 0.11,
+              max: 0.2,
+            },
+          },
+          {
+            name: "not healthy",
+            ptb: {
+              min: 0.85,
+              max: 1,
+            },
+            pogs: {
+              min: 0.3,
+              max: 0.35,
+            },
+          },
+        ],
+      };
+
+      function getRandomPositionFromRange(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+      }
+
+      function getRandomObjectFromList(list) {
+        const pos = getRandomPositionFromRange(0, list.length);
+        return list[pos];
+      }
+      function isInRange(range, data) {
+        return data <= range["max"] && data >= range["min"];
+      }
+      function generatePatient($pt) {
+        let pt = null;
+        const ptTemp = Math.random();
+        for (const $ptItem of $pt) {
+          if (isInRange($ptItem.ptb, ptTemp)) {
+            pt = { ...$ptItem };
+            break;
+          }
+        }
+        const id = `${new Date().toISOString()}-${Math.random()}`;
+        const patient = { id, pt };
+        return patient;
+      }
+      function generatePopulation(populationLength, pt) {
+        const population = [];
+
+        for (let i = 0; i < populationLength; i++) {
+          const patient = generatePatient(pt);
+          population.push(patient);
+        }
+        return population;
+      }
+      function healtSickPopulation(population) {}
+      function increasePopulation(populationLength) {}
+      function makeSick(population) {}
+
+      function _() {}
+
+      const response = generatePopulation(
+        CONFIGURATION.initial_population,
+        CONFIGURATION.pt
+      );
+      console.log(response);
+      const average = response.filter((x) => x.pt["name"] == "average");
+      const healthy = response.filter((x) => x.pt["name"] == "healthy");
+      const noHealthy = response.filter((x) => x.pt["name"] == "not healthy");
+      console.log(healthy);
+      console.log(average);
+      console.log(noHealthy);
+    </script>
+  </body>
+</html>
